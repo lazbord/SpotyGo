@@ -1,18 +1,23 @@
-package main
+package database
 
 import (
+	"context"
+
 	"github.com/lazbord/SpotyGo/services/auth/client"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
+
+const USER_COLLECTION = "user"
 
 type Adapter struct {
 	client   *mongo.Client
 	database *mongo.Database
 }
 
-func NewAdaptater(connectionURI string) (*Adapter, error) {
-	dbName := "user"
-	client, err := client.MongoClient(connectionURI)
+func NewAdapter(connectionURI string) (*Adapter, error) {
+	dbName := "users"
+	client, err := client.NewMongoClient(connectionURI)
 	if err != nil {
 		return nil, err
 	}
@@ -23,4 +28,8 @@ func NewAdaptater(connectionURI string) (*Adapter, error) {
 		client:   client,
 		database: db,
 	}, nil
+}
+
+func CreateUser(a *Adapter) {
+	a.database.Collection(USER_COLLECTION).InsertOne(context.Background(), bson.M{"hello": "world"})
 }
