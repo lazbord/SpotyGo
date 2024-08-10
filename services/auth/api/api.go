@@ -6,13 +6,24 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func test(c *gin.Context) {
-	c.IndentedJSON(http.StatusOK, "it works")
+type LoginRequest struct {
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
-func NewAPI() {
-	router := gin.Default()
-	router.GET("/test", test)
+func Login(c *gin.Context) {
+	var req LoginRequest
 
-	router.Run("localhost:8080")
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid request payload"})
+		return
+	}
+
+	userid, err := CheckCreditential(req.Email)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"userid": userid})
 }
