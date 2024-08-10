@@ -1,18 +1,19 @@
 package main
 
 import (
-	"log"
+	// "log"
 
-	"github.com/lazbord/SpotyGo/services/auth/database"
+	"github.com/lazbord/SpotyGo/services/auth/api"
+	// "github.com/lazbord/SpotyGo/services/auth/database"
 )
 
-const connectionURI = "mongodb://localhost:27017"
+// const connectionURI = "mongodb://localhost:27017"
 
 func main() {
-	db, err := database.NewAdapter(connectionURI)
-	if err != nil {
-		log.Fatal(err)
-	}
+	// db, err := database.NewAdapter(connectionURI)
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
-	database.CreateUser(db)
+	api.NewAPI()
 }

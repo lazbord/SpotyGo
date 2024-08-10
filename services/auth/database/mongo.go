@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"log"
 
 	"github.com/lazbord/SpotyGo/services/auth/client"
 	"go.mongodb.org/mongo-driver/bson"
@@ -31,5 +32,8 @@ func NewAdapter(connectionURI string) (*Adapter, error) {
 }
 
 func CreateUser(a *Adapter) {
-	a.database.Collection(USER_COLLECTION).InsertOne(context.Background(), bson.M{"hello": "world"})
+	_, err := a.database.Collection(USER_COLLECTION).InsertOne(context.Background(), bson.M{"hello": "world"})
+	if err != nil {
+		log.Fatalf("Error inserting user: %v", err)
+	}
 }
