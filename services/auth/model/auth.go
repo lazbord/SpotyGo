@@ -6,7 +6,6 @@ import (
 
 type Auth struct {
 	ID           string `bson:"_id,omitempty" json:"id,omitempty"`
-	UserID       string `bson:"user_id" json:"user_id"`
 	UserMail     string `bson:"user_email" json:"user_mail"`
 	UserPassword string `bson:"user_password" json:"user_password"`
 }

@@ -4,6 +4,7 @@ import (
 	"github.com/lazbord/SpotyGo/services/auth/database"
 	"github.com/lazbord/SpotyGo/services/auth/model"
 	"github.com/pkg/errors"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type AuthService struct {
@@ -20,11 +21,12 @@ func (a *AuthService) CheckCreditential(email, password string) (string, error) 
 	auth, err := a.db.GetAuthByEmail(email)
 	if err != nil {
 		return "", errors.New("No user with this email")
-	} else if auth.UserPassword != password {
+	}
+	if !CheckPasswordHash(password, auth.UserPassword) {
 		return "", errors.New("Wrong password")
 	}
 
-	return auth.UserID, nil
+	return auth.ID, nil
 }
 
 func (a *AuthService) CreateUser() {
@@ -32,5 +34,11 @@ func (a *AuthService) CreateUser() {
 		UserMail:     "lazarebordereaux@yahoo.fr",
 		UserPassword: "password",
 	}
+
 	a.db.CreateAuth(auth)
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }

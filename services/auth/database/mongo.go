@@ -8,6 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
+	"golang.org/x/crypto/bcrypt"
 )
 
 const AUTH_COLLECTION = "user"
@@ -33,6 +34,9 @@ func NewAdapter(connectionURI string) (*Adapter, error) {
 }
 
 func (a *Adapter) CreateAuth(auth model.Auth) (string, error) {
+
+	auth.UserPassword, _ = HashPassword(auth.UserPassword)
+
 	collection := a.database.Collection(AUTH_COLLECTION)
 	res, err := collection.InsertOne(context.Background(), auth, nil)
 	if err != nil {
@@ -55,4 +59,14 @@ func (a *Adapter) GetAuthByEmail(email string) (*model.Auth, error) {
 	}
 
 	return &auth, nil
+}
+
+func HashPassword(password string) (string, error) {
+	bytes, err := bcrypt.GenerateFromPassword([]byte(password), 10)
+	return string(bytes), err
+}
+
+func CheckPasswordHash(password, hash string) bool {
+	err := bcrypt.CompareHashAndPassword([]byte(hash), []byte(password))
+	return err == nil
 }
