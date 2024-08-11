@@ -2,14 +2,15 @@ package database
 
 import (
 	"context"
-	"log"
 
 	"github.com/lazbord/SpotyGo/services/auth/client"
+	"github.com/lazbord/SpotyGo/services/auth/model"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-const USER_COLLECTION = "user"
+const AUTH_COLLECTION = "user"
 
 type Adapter struct {
 	client   *mongo.Client
@@ -17,7 +18,7 @@ type Adapter struct {
 }
 
 func NewAdapter(connectionURI string) (*Adapter, error) {
-	dbName := "users"
+	dbName := "Auth"
 	client, err := client.NewMongoClient(connectionURI)
 	if err != nil {
 		return nil, err
@@ -31,9 +32,27 @@ func NewAdapter(connectionURI string) (*Adapter, error) {
 	}, nil
 }
 
-func (a *Adapter) NewUser() {
-	_, err := a.database.Collection(USER_COLLECTION).InsertOne(context.Background(), bson.M{"hello": "world"})
+func (a *Adapter) CreateAuth(auth model.Auth) (string, error) {
+	collection := a.database.Collection(AUTH_COLLECTION)
+	res, err := collection.InsertOne(context.Background(), auth, nil)
 	if err != nil {
-		log.Fatalf("Error inserting user: %v", err)
+		return "", err
 	}
+
+	return res.InsertedID.(primitive.ObjectID).Hex(), nil
+}
+
+func (a *Adapter) GetAuthByEmail(email string) (*model.Auth, error) {
+	collection := a.database.Collection(AUTH_COLLECTION)
+	auth := model.Auth{}
+	err := collection.FindOne(context.Background(), bson.M{"user_email": email}).Decode(&auth)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, err
+		}
+
+		return nil, err
+	}
+
+	return &auth, nil
 }

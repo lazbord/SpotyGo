@@ -15,7 +15,7 @@ func NewApiAdapter(authService *service.AuthService) *ApiAdapter {
 	}
 }
 
-func (api *ApiAdapter) NewAPI() {
+func (api ApiAdapter) NewAPI() {
 	router := gin.Default()
 
 	router.POST("/login", api.Login)

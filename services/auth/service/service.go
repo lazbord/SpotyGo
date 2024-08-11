@@ -1,9 +1,9 @@
 package service
 
 import (
-	"errors"
-
 	"github.com/lazbord/SpotyGo/services/auth/database"
+	"github.com/lazbord/SpotyGo/services/auth/model"
+	"github.com/pkg/errors"
 )
 
 type AuthService struct {
@@ -17,12 +17,20 @@ func NewAuthService(db *database.Adapter) *AuthService {
 }
 
 func (a *AuthService) CheckCreditential(email, password string) (string, error) {
-	if email != "lazareb" || password != "pwd" {
-		return "", errors.New("invalid email or password")
+	auth, err := a.db.GetAuthByEmail(email)
+	if err != nil {
+		return "", errors.New("No user with this email")
+	} else if auth.UserPassword != password {
+		return "", errors.New("Wrong password")
 	}
-	return "0123456789", nil
+
+	return auth.UserID, nil
 }
 
 func (a *AuthService) CreateUser() {
-	a.db.NewUser()
+	auth := model.Auth{
+		UserMail:     "lazarebordereaux@yahoo.fr",
+		UserPassword: "password",
+	}
+	a.db.CreateAuth(auth)
 }
