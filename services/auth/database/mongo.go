@@ -31,7 +31,7 @@ func NewAdapter(connectionURI string) (*Adapter, error) {
 	}, nil
 }
 
-func CreateUser(a *Adapter) {
+func (a *Adapter) NewUser() {
 	_, err := a.database.Collection(USER_COLLECTION).InsertOne(context.Background(), bson.M{"hello": "world"})
 	if err != nil {
 		log.Fatalf("Error inserting user: %v", err)

@@ -11,7 +11,7 @@ type LoginRequest struct {
 	Password string `json:"password"`
 }
 
-func Login(c *gin.Context) {
+func (api ApiAdapter) Login(c *gin.Context) {
 	var req LoginRequest
 
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -19,11 +19,15 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	userid, err := CheckCreditential(req.Email)
+	userid, err := api.service.CheckCreditential(req.Email, req.Password)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
 	c.JSON(http.StatusOK, gin.H{"userid": userid})
+}
+
+func (api ApiAdapter) Test(c *gin.Context) {
+	api.service.CreateUser()
 }
