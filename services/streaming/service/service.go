@@ -25,7 +25,7 @@ func (a *StreamingService) ServiceGetMusicByID(id string) (*model.Music, error) 
 	return music, nil
 }
 
-func (a *StreamingService) ServiceAddMusic(id string) error {
+func (a *StreamingService) ServiceAddMusic() {
 	music := model.Music{
 		ID:       "123456789",
 		Name:     "Beat it",

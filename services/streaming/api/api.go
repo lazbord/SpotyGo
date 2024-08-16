@@ -26,3 +26,8 @@ func (api ApiAdapter) GetMusicByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"music name": music.Name})
 }
+
+func (api ApiAdapter) AddMusic(c *gin.Context) {
+	api.service.ServiceAddMusic()
+	c.JSON(http.StatusOK, gin.H{"music added": "prout"})
+}
