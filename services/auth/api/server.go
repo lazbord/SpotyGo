@@ -21,9 +21,8 @@ func NewApiAdapter(authService *service.AuthService) *ApiAdapter {
 func (api ApiAdapter) NewAPI() {
 	router := gin.Default()
 
-	// Configure CORS
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8081"}, // React Native dev server origin
+		AllowOrigins:     []string{"http://localhost:8081"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -33,7 +32,6 @@ func (api ApiAdapter) NewAPI() {
 
 	router.POST("/login", api.Login)
 	router.POST("/create/user", api.Test)
-	// router.POST("/login/2fa", DoublefactorLogin)
 
 	router.Run("localhost:8080")
 }

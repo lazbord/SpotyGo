@@ -3,8 +3,8 @@ package database
 import (
 	"context"
 
+	"github.com/lazbord/SpotyGo/model"
 	"github.com/lazbord/SpotyGo/services/auth/client"
-	"github.com/lazbord/SpotyGo/services/auth/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"

@@ -1,8 +1,8 @@
 package service
 
 import (
+	"github.com/lazbord/SpotyGo/model"
 	"github.com/lazbord/SpotyGo/services/streaming/database"
-	"github.com/lazbord/SpotyGo/services/streaming/model"
 	"github.com/pkg/errors"
 )
 
