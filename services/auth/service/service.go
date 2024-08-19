@@ -1,8 +1,8 @@
 package service
 
 import (
+	"github.com/lazbord/SpotyGo/model"
 	"github.com/lazbord/SpotyGo/services/auth/database"
-	"github.com/lazbord/SpotyGo/services/auth/model"
 	"github.com/pkg/errors"
 	"golang.org/x/crypto/bcrypt"
 )
