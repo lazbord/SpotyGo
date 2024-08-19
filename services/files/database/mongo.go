@@ -54,7 +54,7 @@ func (a *Adapter) DBRemoveMusic(music model.Music) error {
 func (a *Adapter) DBGetMusicByID(id string) (*model.Music, error) {
 	collection := a.database.Collection(MUSIC_COLLECTION)
 	music := model.Music{}
-	err := collection.FindOne(context.Background(), bson.M{"id": id}).Decode(&music)
+	err := collection.FindOne(context.Background(), bson.M{"videoid": id}).Decode(&music)
 	if err != nil {
 		if err == mongo.ErrNoDocuments {
 			return nil, err

@@ -30,7 +30,7 @@ func (api ApiAdapter) NewAPI() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	router.POST("/streaming/addmusic", api.DownloadMusicByID)
+	router.POST("/files/Download", api.DownloadMusicByID)
 
 	router.Run("localhost:8080")
 }

@@ -1,6 +1,7 @@
 package service
 
 import (
+	"errors"
 	"io"
 	"log"
 	"os"
@@ -24,6 +25,18 @@ func NewFilesService(db *database.Adapter) *FilesService {
 
 func (a *FilesService) DownloadVideo(videoID string) error {
 	client := youtube.Client{}
+
+	test, err := a.db.DBGetMusicByID(videoID)
+	if err != nil {
+		if err.Error() != "mongo: no documents in result" {
+			return err
+		}
+		test = nil
+	}
+
+	if test != nil && test.VideoId == videoID {
+		return errors.New("music already exists")
+	}
 
 	video, err := client.GetVideo(videoID)
 	if err != nil {
@@ -63,12 +76,13 @@ func (a *FilesService) DownloadVideo(videoID string) error {
 	}
 
 	music := model.Music{
-		ID:       videoID,
-		Name:     video.Title,
-		Artist:   video.Author,
-		Duration: formatDuration(video.Duration),
-		Data:     mp3Data,
-		Filename: mp3FileName,
+		VideoId:   video.ID,
+		Name:      video.Title,
+		Artist:    video.Author,
+		Thumbnail: video.Thumbnails[0].URL,
+		Duration:  formatDuration(video.Duration),
+		Data:      mp3Data,
+		Filename:  mp3FileName,
 	}
 
 	_, err = a.db.DBAddMusic(music)
