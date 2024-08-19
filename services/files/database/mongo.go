@@ -2,6 +2,7 @@ package database
 
 import (
 	"context"
+	"errors"
 
 	"github.com/lazbord/SpotyGo/model"
 	"github.com/lazbord/SpotyGo/services/files/client"
@@ -42,12 +43,18 @@ func (a *Adapter) DBAddMusic(music model.Music) (string, error) {
 	return res.InsertedID.(primitive.ObjectID).Hex(), nil
 }
 
-func (a *Adapter) DBRemoveMusic(music model.Music) error {
+func (a *Adapter) DBDeleteMusic(id string) error {
 	collection := a.database.Collection(MUSIC_COLLECTION)
-	_, err := collection.DeleteOne(context.Background(), music, nil)
+
+	result, err := collection.DeleteOne(context.Background(), bson.M{"videoid": id})
 	if err != nil {
 		return err
 	}
+
+	if result.DeletedCount == 0 {
+		return errors.New("mongo : no document found")
+	}
+
 	return nil
 }
 

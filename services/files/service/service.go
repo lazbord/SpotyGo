@@ -23,7 +23,7 @@ func NewFilesService(db *database.Adapter) *FilesService {
 	}
 }
 
-func (a *FilesService) DownloadVideo(videoID string) error {
+func (a *FilesService) ServiceDownloadVideo(videoID string) error {
 	client := youtube.Client{}
 
 	test, err := a.db.DBGetMusicByID(videoID)
@@ -93,6 +93,14 @@ func (a *FilesService) DownloadVideo(videoID string) error {
 	os.Remove(videoName)
 	os.Remove(mp3FileName)
 
+	return nil
+}
+
+func (a *FilesService) ServiceDeleteMusicById(videoID string) error {
+	err := a.db.DBDeleteMusic(videoID)
+	if err != nil {
+		return err
+	}
 	return nil
 }
 

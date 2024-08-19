@@ -31,6 +31,7 @@ func (api ApiAdapter) NewAPI() {
 	}))
 
 	router.POST("/files/Download", api.DownloadMusicByID)
+	router.DELETE("/files/Delete", api.DeleteMusicByID)
 
 	router.Run("localhost:8080")
 }
