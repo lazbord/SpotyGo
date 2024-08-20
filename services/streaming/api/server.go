@@ -30,5 +30,7 @@ func (api ApiAdapter) NewAPI() {
 		MaxAge:           12 * time.Hour,
 	}))
 
+	router.GET("/streaming", api.StreamMusicByID)
+
 	router.Run("localhost:8080")
 }

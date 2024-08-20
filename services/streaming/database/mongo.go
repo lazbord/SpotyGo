@@ -1,7 +1,11 @@
 package database
 
 import (
+	"context"
+
+	"github.com/lazbord/SpotyGo/model"
 	"github.com/lazbord/SpotyGo/services/streaming/client"
+	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
@@ -25,4 +29,19 @@ func NewAdapter(connectionURI string) (*Adapter, error) {
 		client:   client,
 		database: db,
 	}, nil
+}
+
+func (a *Adapter) DBGetMusicByID(id string) (*model.Music, error) {
+	collection := a.database.Collection(MUSIC_COLLECTION)
+	music := model.Music{}
+	err := collection.FindOne(context.Background(), bson.M{"videoid": id}).Decode(&music)
+	if err != nil {
+		if err == mongo.ErrNoDocuments {
+			return nil, err
+		}
+
+		return nil, err
+	}
+
+	return &music, nil
 }
