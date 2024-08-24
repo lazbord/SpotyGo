@@ -4,8 +4,8 @@ import (
 	"context"
 	"errors"
 
-	"github.com/lazbord/SpotyGo/model"
-	"github.com/lazbord/SpotyGo/services/files/client"
+	"github.com/lazbord/SpotyGo/common/client"
+	"github.com/lazbord/SpotyGo/common/model"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
