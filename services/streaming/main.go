@@ -8,7 +8,7 @@ import (
 	"github.com/lazbord/SpotyGo/services/streaming/service"
 )
 
-const connectionURI = "mongodb://localhost:27017"
+const connectionURI = "mongodb://mongodb:27017/"
 
 func main() {
 	db, err := database.NewAdapter(connectionURI)

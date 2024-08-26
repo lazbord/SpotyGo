@@ -9,7 +9,7 @@ import (
 	"time"
 
 	"github.com/kkdai/youtube/v2"
-	"github.com/lazbord/SpotyGo/model"
+	"github.com/lazbord/SpotyGo/common/model"
 	"github.com/lazbord/SpotyGo/services/files/database"
 )
 

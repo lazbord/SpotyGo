@@ -1,4 +1,4 @@
-FROM golang:1.23-alpine AS builder
+FROM golang:1.23-alpine AS streaming_builder
 
 WORKDIR /app
 
@@ -14,8 +14,8 @@ FROM alpine:latest
 
 WORKDIR /app
 
-COPY --from=builder /app/services/streaming/streaming_service .
+COPY --from=streaming_builder /app/services/streaming/streaming_service .
 
-ENV PORT=8080
+ENV PORT=5002
 
-CMD ["./streaming_service"]
+ENTRYPOINT ["./streaming_service"]

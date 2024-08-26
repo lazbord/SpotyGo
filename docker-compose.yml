@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  streaming:
+    build:
+      context: .
+      dockerfile: ./services/streaming/Dockerfile
+    ports:
+      - "5002:5002"
+
+  files:
+    build:
+      context: .
+      dockerfile: ./services/files/Dockerfile
+    ports:
+      - "5001:5001"
+
+  auth:
+    build:
+      context: .
+      dockerfile: ./services/auth/Dockerfile
+    ports:
+      - "5000:5000"
+
+networks:
+  default:
+    external:
+      name: spotygo_network

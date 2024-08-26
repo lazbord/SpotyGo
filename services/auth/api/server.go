@@ -22,7 +22,7 @@ func (api ApiAdapter) NewAPI() {
 	router := gin.Default()
 
 	router.Use(cors.New(cors.Config{
-		AllowOrigins:     []string{"http://localhost:8081"},
+		AllowOrigins:     []string{"http://0.0.0.0:5000"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Accept"},
 		ExposeHeaders:    []string{"Content-Length"},
@@ -33,5 +33,5 @@ func (api ApiAdapter) NewAPI() {
 	router.POST("/login", api.Login)
 	router.POST("/create/user", api.Test)
 
-	router.Run("localhost:8080")
+	router.Run("0.0.0.0:5000")
 }

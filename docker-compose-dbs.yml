@@ -10,3 +10,8 @@ services:
 
 volumes:
   mongo-data:
+
+networks:
+  default:
+    external:
+      name: spotygo_network
