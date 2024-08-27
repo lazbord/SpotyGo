@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/lazbord/SpotyGo/common/middleware"
 	"github.com/lazbord/SpotyGo/services/files/service"
 )
 
@@ -30,8 +31,8 @@ func (api ApiAdapter) NewAPI() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	router.POST("/files/Download", api.DownloadMusicByID)
-	router.DELETE("/files/Delete", api.DeleteMusicByID)
+	router.POST("/files/Download", middleware.RequireAuth, api.DownloadMusicByID)
+	router.DELETE("/files/Delete", middleware.RequireAuth, api.DeleteMusicByID)
 
 	router.Run("0.0.0.0:5001")
 }

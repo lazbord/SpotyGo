@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/lazbord/SpotyGo/common/middleware"
 	"github.com/lazbord/SpotyGo/services/streaming/service"
 )
 
@@ -30,7 +31,7 @@ func (api ApiAdapter) NewAPI() {
 		MaxAge:           12 * time.Hour,
 	}))
 
-	router.GET("/streaming", api.StreamMusicByID)
+	router.GET("/streaming", middleware.RequireAuth, api.StreamMusicByID)
 
 	router.Run("0.0.0.0:5002")
 }

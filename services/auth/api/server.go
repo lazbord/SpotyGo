@@ -5,6 +5,7 @@ import (
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
+	"github.com/lazbord/SpotyGo/common/middleware"
 	"github.com/lazbord/SpotyGo/services/auth/service"
 )
 
@@ -31,7 +32,7 @@ func (api ApiAdapter) NewAPI() {
 	}))
 
 	router.POST("/login", api.Login)
-	router.POST("/create/user", api.Test)
+	router.POST("/create/user", middleware.RequireAuth, api.Test)
 
 	router.Run("0.0.0.0:5000")
 }

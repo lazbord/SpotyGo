@@ -2,6 +2,8 @@ package api
 
 import (
 	"net/http"
+	"os"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -19,13 +21,16 @@ func (api ApiAdapter) Login(c *gin.Context) {
 		return
 	}
 
-	userid, err := api.service.CheckCreditential(req.Email, req.Password)
+	token, auth, err := api.service.CheckCreditential(req.Email, req.Password)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, gin.H{"userid": userid})
+	c.SetSameSite(http.SameSiteNoneMode)
+	c.SetCookie("access_token", token, 7*24*60*60*int(time.Second), "/", os.Getenv("DOMAIN_NAME"), true, true)
+
+	c.JSON(http.StatusOK, gin.H{"userid": auth.ID})
 }
 
 func (api ApiAdapter) Test(c *gin.Context) {
